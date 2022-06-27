@@ -1,6 +1,6 @@
 export function up(queryInterface, Sequelize) {
-    console.log("Creating users table");
-    return queryInterface.createTable("users", {
+    console.log("Creating customer table");
+    return queryInterface.createTable("customer", {
         id: {
             allowNull: false,
             autoIncrement: true,
@@ -8,10 +8,6 @@ export function up(queryInterface, Sequelize) {
             type: Sequelize.INTEGER,
         },
         phone_number: {
-            type: Sequelize.STRING,
-            allowNull: true,
-        },
-        gender: {
             type: Sequelize.STRING,
             allowNull: true,
         },
@@ -65,6 +61,6 @@ export function up(queryInterface, Sequelize) {
     });
 }
 export function down(queryInterface, Sequelize) {
-    console.log("Dropping users table");
-    return queryInterface.dropTable("users");
+    console.log("Dropping customer table");
+    return queryInterface.dropTable("customer");
 }

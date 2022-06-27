@@ -18,7 +18,7 @@ module.exports = {
             },
             portal_id: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             created_by: {
                 type: Sequelize.STRING,

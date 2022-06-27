@@ -12,7 +12,7 @@ module.exports = {
                     return queryInterface.bulkInsert("portal", [
                         {
                             portal_url: config.appUrl,
-                            portal_name: "OnePortal",
+                            portal_name: "Web App",
                             createdAt: new Date(),
                             updatedAt: new Date(),
                         },

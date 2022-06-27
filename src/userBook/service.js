@@ -35,34 +35,6 @@ export const isNameExist = async (name, id) => {
     return isNameExist;
 };
 
-// export const getPortalFromRequest = async (req, id) => {
-//     let portal;
-//     let portalUrl = req.headers.origin;
-//     if (id) {
-//         const portalDetails = await userBookService.findOne({
-//             attributes: ["id", "portal_name", "portal_url"],
-//             where: { id: id },
-//         });
-//         if (!portalDetails) {
-//             return "";
-//         }
-//         if (portalDetails) {
-//             portal = portalDetails;
-//         }
-//     } else {
-//         const portalDetails = await userBookService.findOne({
-//             attributes: ["id", "portal_name", "portal_url"],
-//             where: { portal_url: { $like: portalUrl } },
-//         });
-//         if (!portalDetails) {
-//             return "";
-//         }
-//         if (portalDetails) {
-//             portal = portalDetails;
-//         }
-//     }
-//     if (portal) return portal;
-// };
 export default {
     userBookService,
     isBookExist,
