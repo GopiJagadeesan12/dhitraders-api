@@ -8,10 +8,10 @@ import { isInteger } from "../../common/validator";
 import { getPortalFromRequest } from "../portal/service";
 
 export default async (req, res) => {
-    let { id } = req.query.id;
+    let { id } = req.query;
 
     const where = {};
-     if (isInteger(id)) {
+    if (isInteger(id)) {
         where.id = id;
     }
 
@@ -41,6 +41,11 @@ export default async (req, res) => {
                 last_loggedin_at,
                 createdAt,
                 updatedAt,
+                address,
+                city,
+                pin_code,
+                state,
+                street,
             } = userDetails.get();
 
             const data = {
@@ -51,6 +56,11 @@ export default async (req, res) => {
                 roleId: role_id,
                 roleName: role_id && getRoleNameByRoleId(parseInt(role_id, 10)),
                 avatar,
+                address,
+                city,
+                pin_code,
+                state,
+                street,
                 avatarUrl: avatar ? getUserMediaUrl(avatar) : "",
                 portalId: portalId,
                 lastLoggedinAt: defaultDateFormat(last_loggedin_at),
