@@ -1,9 +1,8 @@
 //Service
-import { customerService } from "./service";
+import { productService } from "./service";
 
 // Common
 import { defaultDateFormat, getUserMediaUrl } from "../../common/utils";
-import { getRoleNameByRoleId } from "../../common/roles";
 import { isInteger } from "../../common/validator";
 import { getPortalFromRequest } from "../portal/service";
 
@@ -11,7 +10,7 @@ export default async (req, res) => {
     let { id } = req.query.id;
 
     const where = {};
-     if (isInteger(id)) {
+    if (isInteger(id)) {
         where.id = id;
     }
 
@@ -22,39 +21,31 @@ export default async (req, res) => {
         res.status(404).send({ message: "Page not found" });
     }
 
-    customerService
+    productService
         .findOne({
             where,
         })
-        .then(userDetails => {
-            console.log("user detail ----->", userDetails);
-            if (!userDetails) {
-                return res.status(400).send({ message: "User not found" });
+        .then(productDetails => {
+            if (!productDetails) {
+                return res.status(400).send({ message: "Product not found" });
             }
 
             const {
                 id,
-                first_name,
-                email,
-                phone_number,
-                role_id,
-                avatar,
-                last_loggedin_at,
+                name,
+                product_sku,
+                price,
                 createdAt,
                 updatedAt,
-            } = userDetails.get();
+            } = productDetails.get();
 
             const data = {
                 id,
-                firstName: first_name,
-                email,
-                phone_number,
-                roleId: role_id,
-                roleName: role_id && getRoleNameByRoleId(parseInt(role_id, 10)),
+                name: name,
+                product_sku: product_sku,
+                price,
                 avatar,
                 avatarUrl: avatar ? getUserMediaUrl(avatar) : "",
-                portalId: portalId,
-                lastLoggedinAt: defaultDateFormat(last_loggedin_at),
                 createdAt: defaultDateFormat(createdAt),
                 updatedAt: defaultDateFormat(updatedAt),
             };
