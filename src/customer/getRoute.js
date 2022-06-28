@@ -27,7 +27,6 @@ export default async (req, res) => {
             where,
         })
         .then(userDetails => {
-            console.log("user detail ----->", userDetails);
             if (!userDetails) {
                 return res.status(400).send({ message: "User not found" });
             }

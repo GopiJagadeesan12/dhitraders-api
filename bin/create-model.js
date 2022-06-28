@@ -17,8 +17,6 @@ if (args.length > 0) {
             console.error(err);
             return;
         }
-
-        console.log(stdout);
     });
 } else {
     console.log("Please supply model name first and the attributes second");
