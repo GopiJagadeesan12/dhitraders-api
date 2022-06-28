@@ -17,6 +17,11 @@ export default (sequelize, DataTypes) => {
             role_id: DataTypes.INTEGER,
             password_token: DataTypes.STRING,
             last_loggedin_at: DataTypes.DATE,
+            address: DataTypes.STRING,
+            street: DataTypes.STRING,
+            city: DataTypes.STRING,
+            state: DataTypes.STRING,
+            pin_code: DataTypes.INTEGER,
         },
         {
             freezeTableName: true,
