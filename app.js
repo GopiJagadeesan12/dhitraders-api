@@ -15,6 +15,7 @@ import bookRoute from "./src/books/route";
 import userBookRoute from "./src/userBook/route";
 import customerRoute from "./src/customer/route";
 import productRoute from "./src/product/route";
+import productRelation from "./src/productRelation/route";
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use("/", rootRoute);
 //Routes
 app.use(`/v1/user`, userRoute);
 app.use(`/v1/customer`, customerRoute);
+app.use(`/v1/productRelation`, productRelation);
 app.use(`/v1/product`, productRoute);
 app.use(`/v1/portal`, portalRoute);
 app.use(`/v1/book`, bookRoute);
