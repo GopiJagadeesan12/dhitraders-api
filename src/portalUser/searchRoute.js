@@ -98,7 +98,6 @@ export default async (req, res, next) => {
     userService
         .findAndCount(query)
         .then(async results => {
-            console.log("sk results", results);
             // Return null
             if (results.count === 0) {
                 return res.status(200).send(null);

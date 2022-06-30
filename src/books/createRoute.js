@@ -2,7 +2,6 @@
 import { bookService, isBookExist, isNameExist } from "./service";
 
 export default async (req, res, next) => {
-    console.log("req-----------<>", req);
     const data = req.body;
     if (!req.isSuperAdmin) {
         data.user_id = req && req.user && req.user.id;

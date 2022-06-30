@@ -1,5 +1,5 @@
 import { defaultDateFormat } from "../../common/utils";
-import { customerService } from "./service";
+import { productService } from "./service";
 
 export default async (req, res, next) => {
     let { page, pageSize, search, sort, sortDir, pagination } = req.query;
@@ -17,13 +17,12 @@ export default async (req, res, next) => {
 
     const validOrder = ["ASC", "DESC"];
     const sortableFields = {
-        first_name: "first_name",
-        last_name: "last_name",
+        name: "name",
         createdAt: "createdAt",
         updatedAt: "updatedAt",
     };
 
-    const sortParam = sort || "first_name";
+    const sortParam = sort || "name";
     // Validate sortable fields is present in sort param
     if (!Object.keys(sortableFields).includes(sortParam)) {
         return res
@@ -38,13 +37,12 @@ export default async (req, res, next) => {
     }
 
     const where = {};
-    where.role_id = 2;
     // Search by term
     const searchTerm = search ? search.trim() : null;
     if (searchTerm) {
         where.$or = [
             {
-                first_name: {
+                name: {
                     $ilike: `%${searchTerm}%`,
                 },
             },
@@ -64,7 +62,7 @@ export default async (req, res, next) => {
         }
     }
     // Get list and count
-    customerService
+    productService
         .findAndCount(query)
         .then(async results => {
             // Return null
@@ -75,9 +73,9 @@ export default async (req, res, next) => {
             await results.rows.forEach(async customerData => {
                 data.push({
                     id: customerData.id,
-                    first_name: customerData.first_name,
-                    email: customerData.email,
-                    phone_number: customerData.phone_number,
+                    name: customerData.name,
+                    product_sku: customerData.product_sku,
+                    price: customerData.price,
                     createdAt: defaultDateFormat(customerData.createdAt),
                     updatedAt: defaultDateFormat(customerData.updatedAt),
                 });

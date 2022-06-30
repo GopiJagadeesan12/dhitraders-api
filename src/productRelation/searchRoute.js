@@ -1,5 +1,8 @@
 import { defaultDateFormat } from "../../common/utils";
-import { customerService } from "./service";
+import { productRelationService } from "./service";
+import model from "../../db/models";
+
+const { product } = model;
 
 export default async (req, res, next) => {
     let { page, pageSize, search, sort, sortDir, pagination } = req.query;
@@ -16,21 +19,7 @@ export default async (req, res, next) => {
     }
 
     const validOrder = ["ASC", "DESC"];
-    const sortableFields = {
-        first_name: "first_name",
-        last_name: "last_name",
-        createdAt: "createdAt",
-        updatedAt: "updatedAt",
-    };
-
-    const sortParam = sort || "first_name";
-    // Validate sortable fields is present in sort param
-    if (!Object.keys(sortableFields).includes(sortParam)) {
-        return res
-            .status(400)
-            .send({ message: `Unable to sort tag by ${sortParam}` });
-    }
-
+   
     const sortDirParam = sortDir ? sortDir.toUpperCase() : "ASC";
     // Validate order is present in sortDir param
     if (!validOrder.includes(sortDirParam)) {
@@ -38,23 +27,29 @@ export default async (req, res, next) => {
     }
 
     const where = {};
-    where.role_id = 2;
     // Search by term
     const searchTerm = search ? search.trim() : null;
     if (searchTerm) {
         where.$or = [
             {
-                first_name: {
+                product_id: {
                     $ilike: `%${searchTerm}%`,
                 },
             },
         ];
     }
+    where.customer_id = req.params.id;
 
     const query = {
-        order: [[sortParam, sortDirParam]],
+        // order: [[sortParam, sortDirParam]],
         where,
         attributes: { exclude: ["deletedAt"] },
+        include: [
+            {
+                model: product,
+                as: "productData",
+            },
+        ],
     };
 
     if (pagination) {
@@ -64,7 +59,7 @@ export default async (req, res, next) => {
         }
     }
     // Get list and count
-    customerService
+    productRelationService
         .findAndCount(query)
         .then(async results => {
             // Return null
@@ -75,9 +70,13 @@ export default async (req, res, next) => {
             await results.rows.forEach(async customerData => {
                 data.push({
                     id: customerData.id,
-                    first_name: customerData.first_name,
-                    email: customerData.email,
-                    phone_number: customerData.phone_number,
+                    customer_id: customerData.customer_id,
+                    product_id: customerData.product_id,
+                    product_name:
+                        customerData &&
+                        customerData.productData &&
+                        customerData.productData.name,
+                    price: customerData.price,
                     createdAt: defaultDateFormat(customerData.createdAt),
                     updatedAt: defaultDateFormat(customerData.updatedAt),
                 });

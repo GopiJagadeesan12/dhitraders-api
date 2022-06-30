@@ -1,5 +1,5 @@
 //Service
-import { customerService } from "./service";
+import { productRelationService } from "./service";
 
 // Common
 import { defaultDateFormat, getUserMediaUrl } from "../../common/utils";
@@ -22,48 +22,29 @@ export default async (req, res) => {
         res.status(404).send({ message: "Page not found" });
     }
 
-    customerService
+    productRelationService
         .findOne({
             where,
         })
         .then(userDetails => {
             if (!userDetails) {
-                return res.status(400).send({ message: "User not found" });
+                return res.status(400).send({ message: "Product not found" });
             }
 
             const {
                 id,
-                first_name,
-                email,
-                phone_number,
-                role_id,
-                avatar,
-                last_loggedin_at,
+                customer_id,
+                product_id,
+                price,
                 createdAt,
                 updatedAt,
-                address,
-                city,
-                pin_code,
-                state,
-                street,
             } = userDetails.get();
 
             const data = {
                 id,
-                firstName: first_name,
-                email,
-                phone_number,
-                roleId: role_id,
-                roleName: role_id && getRoleNameByRoleId(parseInt(role_id, 10)),
-                avatar,
-                address,
-                city,
-                pin_code,
-                state,
-                street,
-                avatarUrl: avatar ? getUserMediaUrl(avatar) : "",
-                portalId: portalId,
-                lastLoggedinAt: defaultDateFormat(last_loggedin_at),
+                customer_id,
+                product_id,
+                price,
                 createdAt: defaultDateFormat(createdAt),
                 updatedAt: defaultDateFormat(updatedAt),
             };

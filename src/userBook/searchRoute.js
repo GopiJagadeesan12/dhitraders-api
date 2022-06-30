@@ -78,7 +78,6 @@ export default async (req, res, next) => {
             },
         ];
     }
-    console.log("wehre------>", where);
     const query = {
         order: [[sortParam, sortDirParam]],
         where,
@@ -119,7 +118,6 @@ export default async (req, res, next) => {
                     );
                     overDueDate = diffDays;
                     overdue = diffDays + " days";
-                    console.log(diffDays + " days");
                     if (status == STATUS_OVERDUED && overDueDate >= 30) {
                         data.push({
                             id: bookData.id,

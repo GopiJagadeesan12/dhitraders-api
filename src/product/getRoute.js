@@ -1,14 +1,13 @@
 //Service
-import { customerService } from "./service";
+import { productService } from "./service";
 
 // Common
 import { defaultDateFormat, getUserMediaUrl } from "../../common/utils";
-import { getRoleNameByRoleId } from "../../common/roles";
 import { isInteger } from "../../common/validator";
 import { getPortalFromRequest } from "../portal/service";
 
 export default async (req, res) => {
-    let { id } = req.query;
+    let { id } = req.query.id;
 
     const where = {};
     if (isInteger(id)) {
@@ -22,48 +21,31 @@ export default async (req, res) => {
         res.status(404).send({ message: "Page not found" });
     }
 
-    customerService
+    productService
         .findOne({
             where,
         })
-        .then(userDetails => {
-            if (!userDetails) {
-                return res.status(400).send({ message: "User not found" });
+        .then(productDetails => {
+            if (!productDetails) {
+                return res.status(400).send({ message: "Product not found" });
             }
 
             const {
                 id,
-                first_name,
-                email,
-                phone_number,
-                role_id,
-                avatar,
-                last_loggedin_at,
+                name,
+                product_sku,
+                price,
                 createdAt,
                 updatedAt,
-                address,
-                city,
-                pin_code,
-                state,
-                street,
-            } = userDetails.get();
+            } = productDetails.get();
 
             const data = {
                 id,
-                firstName: first_name,
-                email,
-                phone_number,
-                roleId: role_id,
-                roleName: role_id && getRoleNameByRoleId(parseInt(role_id, 10)),
+                name: name,
+                product_sku: product_sku,
+                price,
                 avatar,
-                address,
-                city,
-                pin_code,
-                state,
-                street,
                 avatarUrl: avatar ? getUserMediaUrl(avatar) : "",
-                portalId: portalId,
-                lastLoggedinAt: defaultDateFormat(last_loggedin_at),
                 createdAt: defaultDateFormat(createdAt),
                 updatedAt: defaultDateFormat(updatedAt),
             };
