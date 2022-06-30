@@ -3,7 +3,7 @@ import DataBaseService from "../../common/DataBaseService";
 
 export const productRelationService = new DataBaseService(models.product_relation);
 // Models
-const { product_relation } = models;
+const { product_relation, product } = models;
 
 export const isCustomerExistByEmail = async (email, callback) => {
     await product_relation
@@ -37,19 +37,19 @@ export const getCustomerDetailByEmail = async email => {
     }
     return customerDetails;
 };
-export const getCustomerDetailById = async id => {
-    const customerDetails = await product_relation.findOne({
+export const getProductDetailById = async id => {
+    const productDetails = await product.findOne({
         where: { id: id },
     });
-    if (!customerDetails) {
+    if (!productDetails) {
         return null;
     }
-    return customerDetails;
+    return productDetails;
 };
 
 export default {
     productRelationService,
     isCustomerExistByEmail,
     getCustomerDetailByEmail,
-    getCustomerDetailById,
+    getProductDetailById,
 };
