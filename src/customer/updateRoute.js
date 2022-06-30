@@ -3,7 +3,7 @@ import { customerService } from "./service";
 
 export default async (req, res, next) => {
     const data = req.body;
-    console.log("data ------>", data);
+
     // Validate id
     if (!data.id) {
         return res.status(400).send({ message: "Customer id is required" });

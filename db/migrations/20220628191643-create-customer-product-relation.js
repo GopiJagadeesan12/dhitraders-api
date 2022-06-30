@@ -8,11 +8,11 @@ export function up(queryInterface, Sequelize) {
             type: Sequelize.INTEGER,
         },
         customer_id: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: true,
         },
         product_id: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: true,
         },
         price: {

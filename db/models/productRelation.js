@@ -7,8 +7,8 @@ export default (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            customer_id: DataTypes.STRING,
-            product_id: DataTypes.STRING,
+            customer_id: DataTypes.INTEGER,
+            product_id: DataTypes.INTEGER,
             price: DataTypes.STRING,
         },
         {
@@ -16,6 +16,12 @@ export default (sequelize, DataTypes) => {
             paranoid: true,
         }
     );
+    product_relation.associate = function(models) {
+        product_relation.belongsTo(models.product, {
+            as: "productData",
+            foreignKey: "product_id",
+        });
+    };
 
     return product_relation;
 };
