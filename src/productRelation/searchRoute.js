@@ -1,5 +1,8 @@
 import { defaultDateFormat } from "../../common/utils";
 import { productRelationService } from "./service";
+import model from "../../db/models";
+
+const { product } = model;
 
 export default async (req, res, next) => {
     let { page, pageSize, search, sort, sortDir, pagination } = req.query;
@@ -16,21 +19,7 @@ export default async (req, res, next) => {
     }
 
     const validOrder = ["ASC", "DESC"];
-    const sortableFields = {
-        first_name: "first_name",
-        last_name: "last_name",
-        createdAt: "createdAt",
-        updatedAt: "updatedAt",
-    };
-
-    const sortParam = sort || "first_name";
-    // Validate sortable fields is present in sort param
-    if (!Object.keys(sortableFields).includes(sortParam)) {
-        return res
-            .status(400)
-            .send({ message: `Unable to sort tag by ${sortParam}` });
-    }
-
+   
     const sortDirParam = sortDir ? sortDir.toUpperCase() : "ASC";
     // Validate order is present in sortDir param
     if (!validOrder.includes(sortDirParam)) {
@@ -43,17 +32,24 @@ export default async (req, res, next) => {
     if (searchTerm) {
         where.$or = [
             {
-                first_name: {
+                product_id: {
                     $ilike: `%${searchTerm}%`,
                 },
             },
         ];
     }
+    where.customer_id = req.params.id;
 
     const query = {
         // order: [[sortParam, sortDirParam]],
-        // where,
+        where,
         attributes: { exclude: ["deletedAt"] },
+        include: [
+            {
+                model: product,
+                as: "productData",
+            },
+        ],
     };
 
     if (pagination) {
@@ -72,11 +68,14 @@ export default async (req, res, next) => {
             }
             const data = [];
             await results.rows.forEach(async customerData => {
-                console.log("customer data ====>", customerData);
                 data.push({
                     id: customerData.id,
                     customer_id: customerData.customer_id,
                     product_id: customerData.product_id,
+                    product_name:
+                        customerData &&
+                        customerData.productData &&
+                        customerData.productData.name,
                     price: customerData.price,
                     createdAt: defaultDateFormat(customerData.createdAt),
                     updatedAt: defaultDateFormat(customerData.updatedAt),
