@@ -1,7 +1,8 @@
-import { productRelationService } from "./service";
+import { getProductDetailById, productRelationService } from "./service";
 
 export default async (req, res, next) => {
     const data = req.body;
+
     if (!data.product_id) {
         return res.status(400).send({ message: "Product id is required" });
     }
@@ -20,12 +21,24 @@ export default async (req, res, next) => {
             .status(400)
             .send({ message: "Product Relation already exist" });
     }
-
-    const createData = {
+    let createData;
+    if (!data.default_price && !data.price) {
+        return res.status(400).send({ message: "Product price is required" });
+    }
+    
+    createData = {
         customer_id: data.customer_id,
         product_id: data.product_id,
-        price: data.price,
     };
+
+    if (data.default_price === false || !data.default_price) {
+        createData.price = data.price;
+    }
+    if (data.default_price) {
+        const defaultPrice = await getProductDetailById(data.product_id);
+        createData.price = defaultPrice.price;
+    }
+
 
     try {
         await productRelationService.create(createData);
