@@ -38,7 +38,6 @@ export default async (req, res, next) => {
     }
 
     const where = {};
-    where.role_id = 2;
     // Search by term
     const searchTerm = search ? search.trim() : null;
     if (searchTerm) {
@@ -52,8 +51,8 @@ export default async (req, res, next) => {
     }
 
     const query = {
-        order: [[sortParam, sortDirParam]],
-        where,
+        // order: [[sortParam, sortDirParam]],
+        // where,
         attributes: { exclude: ["deletedAt"] },
     };
 
@@ -73,6 +72,7 @@ export default async (req, res, next) => {
             }
             const data = [];
             await results.rows.forEach(async customerData => {
+                console.log("customer data ====>", customerData);
                 data.push({
                     id: customerData.id,
                     customer_id: customerData.customer_id,
