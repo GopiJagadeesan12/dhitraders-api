@@ -9,6 +9,10 @@ export default (sequelize, DataTypes) => {
             },
             customer_id: DataTypes.INTEGER,
             product_id: DataTypes.STRING,
+            total_amount: DataTypes.STRING,
+            amount_paid: DataTypes.STRING,
+            due_amount: DataTypes.STRING,
+            status: DataTypes.STRING,
         },
         {
             freezeTableName: true,
@@ -16,9 +20,9 @@ export default (sequelize, DataTypes) => {
         }
     );
     bill.associate = function(models) {
-        bill.belongsTo(models.product, {
-            as: "productData",
-            foreignKey: "product_id",
+        bill.belongsTo(models.customer, {
+            as: "customerData",
+            foreignKey: "customer_id",
         });
     };
 
