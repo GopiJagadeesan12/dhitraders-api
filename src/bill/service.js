@@ -1,9 +1,8 @@
 import models from "../../db/models";
 import DataBaseService from "../../common/DataBaseService";
-
-export const billService = new DataBaseService(models.bill);
 // Models
 const { bill, product } = models;
+export const billService = new DataBaseService(models.bill);
 
 export const isCustomerExistByEmail = async (email, callback) => {
     await bill
