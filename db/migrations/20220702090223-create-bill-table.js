@@ -15,6 +15,22 @@ export function up(queryInterface, Sequelize) {
             type: Sequelize.STRING,
             allowNull: true,
         },
+        total_amount: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        amount_paid: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        due_amount: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        status: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
         createdAt: {
             allowNull: false,
             type: Sequelize.DATE,

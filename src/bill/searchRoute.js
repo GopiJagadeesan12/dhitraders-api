@@ -1,5 +1,8 @@
 import { defaultDateFormat } from "../../common/utils";
 import { billService } from "./service";
+import model from "../../db/models";
+
+const { customer } = model;
 
 export default async (req, res, next) => {
     let { page, pageSize, search, sort, sortDir, pagination } = req.query;
@@ -39,8 +42,14 @@ export default async (req, res, next) => {
 
     const query = {
         // order: [[sortParam, sortDirParam]],
-        where,
+        // where,
         attributes: { exclude: ["deletedAt"] },
+        include: [
+            {
+                model: customer,
+                as: "customerData",
+            },
+        ],
     };
 
     if (pagination) {
@@ -58,14 +67,17 @@ export default async (req, res, next) => {
                 return res.status(200).send(null);
             }
             const data = [];
-            await results.rows.forEach(async customerData => {
-                console.log("customerData ====>", customerData);
+            await results.rows.forEach(async billData => {
                 data.push({
-                    id: customerData.id,
-                    customer_id: customerData.customer_id,
-                    product_id: customerData.product_id,
-                    createdAt: defaultDateFormat(customerData.createdAt),
-                    updatedAt: defaultDateFormat(customerData.updatedAt),
+                    id: billData.id,
+                    customer_id: billData.customer_id,
+                    product_id: billData.product_id,
+                    customer:
+                        billData &&
+                        billData.customerData &&
+                        billData.customerData.first_name,
+                    createdAt: defaultDateFormat(billData.createdAt),
+                    updatedAt: defaultDateFormat(billData.updatedAt),
                 });
             });
             res.send({
