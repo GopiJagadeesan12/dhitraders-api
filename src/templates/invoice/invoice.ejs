@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+           name="viewport"
+           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Invoice #<%= id %></title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap');
+
+            html, body {
+                margin: 0;
+            }
+
+            body {
+                width: 100%;
+                font-family: 'Muli', sans-serif;
+                background-color: #ffffff;
+            }
+
+            .smaller-fonts {
+                font-size: 12px;
+            }
+
+            p {
+                margin: 0;
+            }
+
+            .clearfix:after {
+                content: "";
+                clear: both;
+                display: table;
+            }
+
+            #content {
+                margin: 40px;
+                font-size: 1em;
+                line-height: 20px;
+                color: #292934;
+            }
+
+            #header {
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+                border-bottom: 1px solid black;
+            }
+
+            #company-logo {
+                float: left;
+            }
+
+            #company-logo-image { 
+                height: 24px;
+                width: 24px;
+            }
+
+            #company-info {
+                float: right;
+                text-align: right;
+                font-size: 1em;
+                line-height: 20px;
+            }
+
+            #company-name {
+                font-weight: 700;
+            }
+
+            #invoice-info {
+                font-size: 1.25em;
+                line-height: 27px;
+                font-weight: 700;
+            }
+
+            #invoice-id {
+                float: left;
+            }
+
+            #invoice-date {
+                float: right;
+            }
+
+            #billing-info {
+                margin-top: 10px;
+            }
+
+            #invoice-details {
+                margin-top: 20px;
+                width: 100%;
+                border-spacing: 0;
+                margin-bottom: 40px;
+            }
+
+            #invoice-details th, #invoice-details td {
+                padding: 15px;
+                text-align: left;
+            }
+
+            #invoice-details thead {
+                background-color: #87878b;
+                color: #ffffff;
+                font-weight: 700;
+            }
+
+            #invoice-details tbody td {
+                border-style: solid;
+                border-width: 0px;
+                border-color: #87878b;
+                border-bottom-width: 1px;
+            }
+
+            #invoice-details tbody td:first-child {
+                border-bottom-width: 0;
+            }
+
+            #invoice-details tbody td:last-child {
+                border-right-width: 1px;
+            }
+
+            #invoice-details tbody td:nth-child(2) {
+                border-left-width: 1px;
+            }
+
+            #invoice-details tbody tr:first-child td:nth-child(2) {
+                border-left-width: 0;
+            }
+
+            #invoice-details tbody tr:first-child td:first-child {
+                border-left-width: 1px;
+                border-bottom-width: 1px;
+            }
+
+            #invoice-details #balance-due td:not(:first-child) {
+                background-color: #00c499;
+                color: #ffffff;
+                font-weight: 700;
+            }
+
+            #invoice-details #due-date {
+                font-weight: 700;
+            }
+            
+            #footer {
+                margin-top: auto;
+                font-size: 0.75em;
+                line-height: 15px;
+                text-align: center;
+            }
+
+            #copyright {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body class="<%= isPdf ? 'smaller-fonts' : '' %>">
+        <div id="content">
+            <div id="header" class="clearfix">
+                <div id="company-logo">
+                    <img src="<%= logoUrl %>" alt="company Logo" id="company-logo-image">
+                </div>
+                <div id="company-info">
+                    <p id="company-name"><%= companyName %></p>
+                    <p id="company-address"><%= companyAddress %></p>
+                    <p id="company-city"><%= companyCity %></p>
+                </div>
+            </div>
+            <div id="invoice-info" class="clearfix">
+                <div id="invoice-id">Invoice #<%= id %></div>
+                <div id="invoice-date"><%= date %></div>
+            </div>
+            <div id="billing-info">
+                <div id="billing-name"><%= billingName %></div>
+                <div id="billing-address"><%= billingAddress %></div>
+                <div id="billing-city"><%= billingCity %></div>
+                <div id="billing-country"><%= billingCountry %></div>
+                <div id="billing-phone"><%= billingPhone %></div>
+            </div>
+            <table id="invoice-details">
+                <thead>
+                    <tr>
+                        <th>Details</th>
+                        <th>Rate</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><%= description %></td>
+                        <td><%= rate %></td>
+                        <td><%= amount %></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Tax:</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Total Due:</td>
+                        <td><%= amount %></td>
+                    </tr>
+                    <tr id="balance-due">
+                        <td></td>
+                        <td>Balance Due:</td>
+                        <td><%= amount %></td>
+                    </tr>
+                    <tr id="due-date">
+                        <td></td>
+                        <td>Due Date:</td>
+                        <td><%= dueDate %></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="footer">
+                <p id="confidential">
+                    This communication is for the exclusive use of the addressee and may contain proprietary,
+                    confidential or privileged information. If you are not the intended recipient any use, copying,
+                    disclosure, dissemination or distribution is strictly prohibited.
+                </p>
+                <p id="copyright">
+                    &copy; <%= currentYear %> <%= companyName %>. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
