@@ -1,11 +1,11 @@
-import { getProductDetailById, billService } from "./service";
+import { billService, getCustomerProductPriceById } from "./service";
 import async from "async";
 export default async (req, res, next) => {
     const data = req.body;
     if (!data.customer) {
         return res.status(400).send({ message: "Customer id is required" });
     }
-
+// Split the product ids
     let productList = [];
     let product;
     if (data.products) {
@@ -22,6 +22,7 @@ export default async (req, res, next) => {
         }
     }
 
+    // Create data
     const createData = {};
     if (productList) {
         createData.product_id = productList && productList.join(", ");
@@ -33,48 +34,48 @@ export default async (req, res, next) => {
     try {
         await billService.create(createData).then(values => {
             res.on("finish", async () => {
+                let bill_id = values && values.id;
                 const productIds = values.product_id.split(",");
-                
+
+                // Get product Ids
                 let id = [];
                 if (productIds && productIds.length > 0) {
                     productIds.forEach(productId => {
-                        console.log("Product idv----->", productId);
                         id.push({
-                            id: productId.id,
+                            id: productId,
                         });
                     });
                 }
+
+                // Get the price details
+                let price = [];
                 if (id) {
-                    console.log("id ----->", id);
                     await async.eachSeries(id, async (value, cb) => {
-                        console.log("value ---=>", id);
-                        const billAmount = await billService.findOne(
-                            {
-                                attributes: ["id"],
-                                where: { id: id },
-                            }
+                        const productDetails = await getCustomerProductPriceById(
+                            value.id,
+                            data.customer
                         );
-                        console.log("billAmount =======>", billAmount);
-                        // Create Permission Data
-                        let createData = {
-                            tracker_project_id: tracker_id,
-                            project_id: tracker_id,
-                            company_id: portalDetails.company_id,
-                        };
-                        // Update data if permission details exists
-                        if (billAmount) {
-                            await billAmount
-                                .update(createData)
-                                .then(() => {
-                                    cb();
-                                });
-                        }
+                        price.push(productDetails);
+                        cb();
                     });
                 }
+
+                // Add the product price
+                let value = 0;
+                price.forEach(data => {
+                    value = value + parseInt(data);
+                });
+                //Update price in db
+                const updateData = {
+                    total_amount: value ? value : "",
+                };
+                await billService.update(updateData, {
+                    where: { id: bill_id },
+                });
             });
         });
 
-        res.status(200).send({ message: "Product Added Successfully" });
+        res.status(200).send({ message: "Bill Created Successfully" });
     } catch (err) {
         res.status(400).send(err);
         next(err);
