@@ -1,8 +1,8 @@
 import path from "path";
 import moment from "moment";
 import BaseController from "./baseController";
-import { invoiceService } from "./invoiceService";
-import { ejsClient } from "./ejsClient";
+import { invoiceService } from "../bill/invoiceService";
+import { ejsClient } from "../ejs/ejsClient";
 class InvoiceController extends BaseController {
     async createInvoiceHtml(req, res) {
         let companyId = "1";
