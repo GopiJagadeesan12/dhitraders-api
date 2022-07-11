@@ -3,6 +3,7 @@ import moment from "moment";
 import BaseController from "./baseController";
 import { invoiceService } from "../bill/invoiceService";
 import { ejsClient } from "../ejs/ejsClient";
+
 class InvoiceController extends BaseController {
     async createInvoiceHtml(req, res) {
         let companyId = "1";
@@ -28,6 +29,8 @@ class InvoiceController extends BaseController {
                 invoiceTemplatesPath,
                 "invoice-error.ejs"
             );
+            const logourl =
+                "https://partners-api-staging.torchlite.com/v1/media/491/logo.jpg";
             const invoiceRender = {
                 path: templatePath,
                 data: {
@@ -51,7 +54,7 @@ class InvoiceController extends BaseController {
                     // dueDate: invoice.due_at
                     //     ? moment(invoice.due_at).format("MMM DD, YYYY")
                     //     : "",
-                    logoUrl: "LOGO",
+                    logoUrl: logourl,
                     amount: "2457",
                     dueAmount: "345",
                     rate: "2457",
