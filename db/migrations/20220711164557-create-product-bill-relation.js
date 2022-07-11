@@ -1,30 +1,23 @@
 export function up(queryInterface, Sequelize) {
-    console.log("Creating bill table");
-    return queryInterface.createTable("bill", {
+    console.log("Creating bill relation table");
+    return queryInterface.createTable("bill_relation", {
         id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER,
         },
-        customer_id: {
+        bill_id: {
             type: Sequelize.INTEGER,
             allowNull: true,
         },
-        total_amount: {
-            type: Sequelize.STRING,
+        product_id: {
+            type: Sequelize.INTEGER,
             allowNull: true,
         },
-        amount_paid: {
-            type: Sequelize.STRING,
-            allowNull: true,
-        },
-        due_amount: {
-            type: Sequelize.STRING,
-            allowNull: true,
-        },
-        status: {
-            type: Sequelize.STRING,
+
+        quantity: {
+            type: Sequelize.INTEGER,
             allowNull: true,
         },
         createdAt: {
@@ -42,6 +35,6 @@ export function up(queryInterface, Sequelize) {
     });
 }
 export function down(queryInterface, Sequelize) {
-    console.log("Dropping bill table");
-    return queryInterface.dropTable("bill");
+    console.log("Dropping bill relation table");
+    return queryInterface.dropTable("bill_relation");
 }

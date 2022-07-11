@@ -34,7 +34,6 @@ export default async (req, res) => {
             const {
                 id,
                 customer_id,
-                product_id,
                 price,
                 createdAt,
                 updatedAt,
@@ -43,7 +42,6 @@ export default async (req, res) => {
             const data = {
                 id,
                 customer_id,
-                product_id,
                 price,
                 createdAt: defaultDateFormat(createdAt),
                 updatedAt: defaultDateFormat(updatedAt),
