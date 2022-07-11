@@ -1,7 +1,7 @@
 import path from "path";
 import moment from "moment";
 // Service
-import BaseService from "./baseService";
+import BaseService from "../controller/baseService";
 import { formatCurrency, formatPhone } from "../../helpers/format";
  
 import { invoiceRepository } from "../../db/repositories/invoiceRepository";

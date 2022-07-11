@@ -1,11 +1,16 @@
 import { billService, getCustomerProductPriceById } from "./service";
 import async from "async";
+// Models
+import models from "../../db/models";
+
+const { bill_relation } = models;
 export default async (req, res, next) => {
     const data = req.body;
     if (!data.customer) {
         return res.status(400).send({ message: "Customer id is required" });
     }
-// Split the product ids
+
+    // Split the product ids
     let productList = [];
     let product;
     if (data.products) {
@@ -15,8 +20,11 @@ export default async (req, res, next) => {
             product &&
                 product.length > 0 &&
                 product.forEach(data => {
-                    if (data.id) {
-                        productList.push(data.id);
+                    if (data.description) {
+                        productList.push({
+                            product_id: data.description,
+                            quantity: data.quantity,
+                        });
                     }
                 });
         }
@@ -24,9 +32,7 @@ export default async (req, res, next) => {
 
     // Create data
     const createData = {};
-    if (productList) {
-        createData.product_id = productList && productList.join(", ");
-    }
+
     if (data.customer) {
         createData.customer_id = data && data.customer;
     }
@@ -35,43 +41,30 @@ export default async (req, res, next) => {
         await billService.create(createData).then(values => {
             res.on("finish", async () => {
                 let bill_id = values && values.id;
-                const productIds = values.product_id.split(",");
 
                 // Get product Ids
-                let id = [];
-                if (productIds && productIds.length > 0) {
-                    productIds.forEach(productId => {
-                        id.push({
-                            id: productId,
+                let productId = [];
+                if (productList && productList.length > 0) {
+                    productList.forEach(productid => {
+                        productId.push({
+                            productId: productid.product_id,
+                            quantity: productid.quantity,
                         });
                     });
                 }
 
-                // Get the price details
-                let price = [];
-                if (id) {
-                    await async.eachSeries(id, async (value, cb) => {
-                        const productDetails = await getCustomerProductPriceById(
-                            value.id,
-                            data.customer
-                        );
-                        price.push(productDetails);
+                // Create the product bill relations
+                if (productId) {
+                    await async.eachSeries(productId, async (value, cb) => {
+                        const createData = {
+                            bill_id: values.id,
+                            product_id: value.productId,
+                            quantity: value.quantity,
+                        };
+                        await bill_relation.create(createData);
                         cb();
                     });
                 }
-
-                // Add the product price
-                let value = 0;
-                price.forEach(data => {
-                    value = value + parseInt(data);
-                });
-                //Update price in db
-                const updateData = {
-                    total_amount: value ? value : "",
-                };
-                await billService.update(updateData, {
-                    where: { id: bill_id },
-                });
             });
         });
 

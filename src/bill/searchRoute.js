@@ -71,7 +71,6 @@ export default async (req, res, next) => {
                 data.push({
                     id: billData.id,
                     customer_id: billData.customer_id,
-                    product_id: billData.product_id,
                     customer:
                         billData &&
                         billData.customerData &&
