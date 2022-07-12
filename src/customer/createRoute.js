@@ -4,12 +4,6 @@ import { customerService } from "./service";
 export default async (req, res, next) => {
     const data = req.body;
 
-    const isEmail = await customerService.findOne({
-        where: { email: data.email },
-    });
-    if (isEmail) {
-        return res.status(400).send({ message: "Email already exist" });
-    }
     data.role_id = 2;
 
     try {
