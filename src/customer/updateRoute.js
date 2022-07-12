@@ -14,7 +14,6 @@ export default async (req, res, next) => {
         address: data && data.address,
         firstName: data && data.firstName,
         city: data && data.city,
-        email: data && data.email,
         phone_number: data && data.phone_number,
         pin_code: data && data.pin_code,
         state: data && data.state,
