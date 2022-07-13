@@ -11,10 +11,6 @@ export function up(queryInterface, Sequelize) {
             type: Sequelize.STRING,
             allowNull: true,
         },
-        email: {
-            type: Sequelize.STRING,
-            allowNull: true,
-        },
         first_name: {
             type: Sequelize.STRING,
             allowNull: true,
@@ -43,6 +39,26 @@ export function up(queryInterface, Sequelize) {
             allowNull: true,
         },
         password_token: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        address: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        street: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        city: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        state: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        pin_code: {
             type: Sequelize.STRING,
             allowNull: true,
         },
