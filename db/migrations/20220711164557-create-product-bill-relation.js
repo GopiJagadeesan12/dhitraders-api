@@ -15,7 +15,14 @@ export function up(queryInterface, Sequelize) {
             type: Sequelize.INTEGER,
             allowNull: true,
         },
-
+        product_name: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        amount: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+        },
         quantity: {
             type: Sequelize.INTEGER,
             allowNull: true,

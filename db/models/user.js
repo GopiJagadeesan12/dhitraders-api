@@ -7,7 +7,6 @@ export default (sequelize, DataTypes) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            roll_no: DataTypes.STRING,
             dob: DataTypes.STRING,
             reg_no: DataTypes.STRING,
             first_name: DataTypes.STRING,

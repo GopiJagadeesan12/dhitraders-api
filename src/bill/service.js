@@ -1,7 +1,7 @@
 import models from "../../db/models";
 import DataBaseService from "../../common/DataBaseService";
 // Models
-const { bill, product, product_relation } = models;
+const { bill, product, product_relation, bill_relation } = models;
 export const billService = new DataBaseService(models.bill);
 
 export const isCustomerExistByEmail = async (email, callback) => {
@@ -54,6 +54,17 @@ export const getCustomerProductPriceById = async (product_id, customer_id) => {
         return null;
     }
     return customerProductDetails.price;
+};
+
+
+export const getProductNameById = async (product_id) => {
+    const ProductDetails = await product.findOne({
+        where: { id: product_id },
+    });
+    if (!ProductDetails) {
+        return null;
+    }
+    return ProductDetails.name;
 };
 
 export default {

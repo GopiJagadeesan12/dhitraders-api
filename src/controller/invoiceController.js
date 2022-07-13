@@ -3,94 +3,105 @@ import moment from "moment";
 import BaseController from "./baseController";
 import { invoiceService } from "../bill/invoiceService";
 import { ejsClient } from "../ejs/ejsClient";
+import { billService } from "../bill/service";
+import { customerService } from "../customer/service";
 
+import models from "../../db/models";
+const { bill_relation } = models;
 class InvoiceController extends BaseController {
     async createInvoiceHtml(req, res) {
-        let companyId = "1";
         try {
-            // const invoiceRender = await this.service.getInvoiceRenderData(
-            //     req.params.id,
-            //     companyId
-            // );
-            console.log("enter function");
+            // Get Invoice Details
+            const invoiceData = await billService.findOne({
+                where: { id: req.params.id },
+            });
+            let customer_id = invoiceData && invoiceData.customer_id;
+            // Get Customer Details by Id
+            const customerDetails = await customerService.findOne({
+                where: { id: customer_id },
+            });
+
+            const customerName = customerDetails.first_name;
+            const customerAddress = customerDetails.address;
+            const customerStreet = customerDetails.street;
+            const customerCity = customerDetails.city;
+            const customerState = customerDetails.state;
+            const customerPinCode = customerDetails.pin_code;
+            const customerPhone = customerDetails.phone_number;
+
+            //Get Total Amount and bill details
+            const billDetails = await bill_relation.findAll({
+                where: { bill_id: invoiceData.id },
+            });
+
+            // Get total Bill amount
+            let bill_amount = [];
+            if (billDetails) {
+                billDetails.forEach(data => {
+                    if (data.amount) {
+                        bill_amount.push(data.amount);
+                    }
+                });
+            }
+
+            let totalAmount = 0;
+             bill_amount.forEach(data => {
+                totalAmount = totalAmount + data;
+            });
+
+            // Get template path
             const invoiceTemplatesPath = path.resolve(
                 __dirname,
                 "..",
                 "templates",
                 "invoice"
             );
-            console.log("invoiceTemplatesPath ====>", invoiceTemplatesPath);
             let templatePath = path.resolve(
                 invoiceTemplatesPath,
                 "invoice.ejs"
             );
-            console.log("templatePath ======>", templatePath);
-            const errorTemplatePath = path.resolve(
-                invoiceTemplatesPath,
-                "invoice-error.ejs"
-            );
+
             const logourl =
                 "https://partners-api-staging.torchlite.com/v1/media/491/logo.jpg";
             const invoiceRender = {
                 path: templatePath,
                 data: {
-                    id: "1",
+                    id: invoiceData.id,
                     isPdf: true,
-                    companyName: "ID TRADERS",
+                    companyName: "Dinesh",
                     companyAddress: "Marusuran St",
-                    companyCity: `${"ARANI"} ${"56085"} ${"85"}`,
+                    companyCity: `${"ARANI"} ${"TN"} ${"85"}`,
                     companyCountry: "INDIA",
                     companyPhone: "9876543211",
-                    description: "HELLO TEST",
-                    billingName: "IDT",
-                    billingAddress: "address",
-                    billingCity: `${"Chennai" + ","} ${"TN"} ${"60028"}`,
+
+                    description: "Total Amount to be paid",
+                    billingName: customerName,
+                    billingAddress: customerAddress + customerStreet,
+                    billingCity: `${customerCity +
+                        ","} ${customerState} ${customerPinCode}`,
                     billingCountry: "INDIA",
-                    billingPhone: "0987654321",
+                    billingPhone: customerPhone,
                     currentYear: moment().format("YYYY"),
-                    // date: moment(invoice.createdAt).format("MMM DD, YYYY"),
-                    date: "CREATED AT",
+                    date: moment(invoiceData.createdAt).format("MMM DD, YYYY"),
                     dueDate: "DUE AT",
-                    // dueDate: invoice.due_at
-                    //     ? moment(invoice.due_at).format("MMM DD, YYYY")
+                    // dueDate: invoiceData.due_at
+                    //     ? moment(invoiceData.due_at).format("MMM DD, YYYY")
                     //     : "",
                     logoUrl: logourl,
-                    amount: "2457",
-                    dueAmount: "345",
-                    rate: "2457",
+                    amount: totalAmount,
+                    dueAmount: totalAmount,
+                    rate: totalAmount,
                     statusBadge: "PAID",
-                    isPaid: true,
-                    paidDate: "paid date",
-                    // paidDate: invoice.paid_at
-                    //     ? moment(invoice.paid_at).format("MMM DD, YYYY")
-                    //     : "",
-                    accountNumber: "12345690",
-                    routingNumber: "234567890",
-                    partnerName: "First Name",
                 },
             };
-            console.log("invoice renderer --->", invoiceRender);
             const html = await ejsClient.renderHtml(
                 invoiceRender.path,
                 invoiceRender.data
             );
-            console.log("html ---->", html);
 
             return res.status(200).send(html);
         } catch (err) {
-            console.log("error ====>", err);
-            // const errorRender = this.service.getInvoiceRenderData(
-            //     req.params.id,
-            //     companyId,
-            //     false,
-            //     true
-            // );
-            // const html = await ejsClient.renderHtml(
-            //     errorRender.path,
-            //     errorRender.data
-            // );
-
-            return res.status(400).send("html");
+            return res.status(400).send(err);
         }
     }
 }

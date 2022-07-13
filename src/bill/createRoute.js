@@ -1,4 +1,4 @@
-import { billService, getCustomerProductPriceById } from "./service";
+import { billService, getCustomerProductPriceById, getProductNameById } from "./service";
 import async from "async";
 // Models
 import models from "../../db/models";
@@ -23,7 +23,9 @@ export default async (req, res, next) => {
                     if (data.description) {
                         productList.push({
                             product_id: data.description,
+                            name: data.name,
                             quantity: data.quantity,
+                            rate: data.rate,
                         });
                     }
                 });
@@ -45,10 +47,12 @@ export default async (req, res, next) => {
                 // Get product Ids
                 let productId = [];
                 if (productList && productList.length > 0) {
-                    productList.forEach(productid => {
+                    productList.forEach(productDetails => {
                         productId.push({
-                            productId: productid.product_id,
-                            quantity: productid.quantity,
+                            productId: productDetails.product_id,
+                            quantity: productDetails.quantity,
+                            rate: productDetails.rate,
+                            name: productDetails.name
                         });
                     });
                 }
@@ -59,7 +63,12 @@ export default async (req, res, next) => {
                         const createData = {
                             bill_id: values.id,
                             product_id: value.productId,
+                            product_name:  value.name,
                             quantity: value.quantity,
+                            amount:
+                                value && value.rate
+                                    ? value.rate * value.quantity
+                                    : "",
                         };
                         await bill_relation.create(createData);
                         cb();
