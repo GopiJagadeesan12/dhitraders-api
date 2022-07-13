@@ -15,21 +15,18 @@ class InvoiceService extends BaseService {
             throw err;
         }
     }
-    async getInvoiceRenderData(id, companyId, isPdf, isError) {
+    async getInvoiceRenderData(id, isPdf, isError) {
         const invoiceTemplatesPath = path.resolve(
             __dirname,
             "..",
             "templates",
             "invoice"
         );
-        console.log("invoiceTemplatesPath ====>", invoiceTemplatesPath);
-        let templatePath = path.resolve(invoiceTemplatesPath, "invoice.ejs");
-        console.log("templatePath ======>", templatePath);
+            let templatePath = path.resolve(invoiceTemplatesPath, "invoice.ejs");
         const errorTemplatePath = path.resolve(
             invoiceTemplatesPath,
             "invoice-error.ejs"
         );
-        let projectCustomer, billingInfo, referralDetails, partnerDetails;
 
         let country = "",
             state = "",
@@ -48,11 +45,6 @@ class InvoiceService extends BaseService {
             statusBadge = "",
             isPaid = false;
         try {
-            // const invoice = await this.findInvoice(
-            //     { id },
-            //     this.repository.invoiceIncludeCustomer()
-            // );
-
             const marketplaceCompanyName =
                "Company Name";
             const marketplaceCompanyAddress =
@@ -68,87 +60,7 @@ class InvoiceService extends BaseService {
             const marketplaceCompanyPhone =
                  "9245400915";
            
-        
-
-            // if (referralDetails) {
-            //     templatePath = path.resolve(
-            //         invoiceTemplatesPath,
-            //         "invoiceReferral.ejs"
-            //     );
-            //     dueAmount =
-            //         invoice.payment_status === invoiceConstants.status.PAID
-            //             ? 0
-            //             : invoice.amount;
-            //     statusBadge =
-            //         invoice.payment_status === invoiceConstants.status.PENDING
-            //             ? "READY FOR PAYOUT"
-            //             : invoice.payment_status ===
-            //               invoiceConstants.status.PAID
-            //             ? "PAID"
-            //             : invoice.payment_status ===
-            //               invoiceConstants.status.APPROVED
-            //             ? "APPROVED"
-            //             : invoice.payment_status ===
-            //               invoiceConstants.status.PARTIALLY_PAID
-            //             ? "PARTIALLY PAID"
-            //             : "";
-            //     isPaid =
-            //         invoice.payment_status === invoiceConstants.status.PAID;
-            // }
-
-            // if (billingInfo) {
-            //     country = billingInfo.country;
-            //     state = billingInfo.state;
-            //     city = billingInfo.city;
-            //     postal_code = billingInfo.postal_code;
-            //     phone = billingInfo.phone;
-            //     display_company_name = invoice.account.company_name;
-            //     address = billingInfo.address;
-            // }
-
-            // if (referralDetails && referralDetails.commission_percentage) {
-            //     rate = `${referralDetails.commission_percentage}% Commission`;
-            // }
-
-            // if (partnerDetails) {
-            //     companyLogo = partnerDetails.avatar
-            //         ? await getPartnerMediaUrl(partnerDetails.avatar)
-            //         : "";
-            // }
-
-            // if (country && state) {
-            //     try {
-            //         countryCode = Object.keys(countries).find(
-            //             countryKey => countries[countryKey] === country
-            //         );
-            //         stateCode = Object.keys(states[countryCode]).find(
-            //             stateKey => states[countryCode][stateKey] === state
-            //         );
-            //     } catch (err) {
-            //         stateCode = "";
-            //         console.log(err);
-            //     }
-            // }
-
-            // if (marketplaceCompanyState && marketplaceCompanyCountry) {
-            //     try {
-            //         companyCountryCode = Object.keys(countries).find(
-            //             countryKey =>
-            //                 countries[countryKey] === marketplaceCompanyCountry
-            //         );
-            //         companyStateCode = Object.keys(
-            //             states[companyCountryCode]
-            //         ).find(
-            //             stateKey =>
-            //                 states[companyCountryCode][stateKey] ===
-            //                 marketplaceCompanyState
-            //         );
-            //     } catch (err) {
-            //         companyStateCode = "";
-            //         console.log(err);
-            //     }
-            // }
-
+       
             if (isError) {
                 return {
                     path: errorTemplatePath,

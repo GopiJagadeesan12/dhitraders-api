@@ -8,6 +8,8 @@ export default (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             product_id: DataTypes.INTEGER,
+            product_name: DataTypes.STRING,
+            amount: DataTypes.INTEGER,
             bill_id: DataTypes.INTEGER,
             quantity: DataTypes.INTEGER,
         },
