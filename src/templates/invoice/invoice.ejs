@@ -3,21 +3,22 @@
     <head>
         <meta charset="UTF-8" />
         <meta
-           name="viewport"
-           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
         />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>Invoice #<%= id %></title>
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap');
+            @import url("https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap");
 
-            html, body {
+            html,
+            body {
                 margin: 0;
             }
 
             body {
                 width: 100%;
-                font-family: 'Muli', sans-serif;
+                font-family: "Muli", sans-serif;
                 background-color: #ffffff;
             }
 
@@ -52,7 +53,7 @@
                 float: left;
             }
 
-            #company-logo-image { 
+            #company-logo-image {
                 height: 50px;
                 width: 100px;
             }
@@ -93,7 +94,8 @@
                 margin-bottom: 40px;
             }
 
-            #invoice-details th, #invoice-details td {
+            #invoice-details th,
+            #invoice-details td {
                 padding: 15px;
                 text-align: left;
             }
@@ -141,7 +143,7 @@
             #invoice-details #due-date {
                 font-weight: 700;
             }
-            
+
             #footer {
                 margin-top: auto;
                 font-size: 0.75em;
@@ -158,7 +160,11 @@
         <div id="content">
             <div id="header" class="clearfix">
                 <div id="company-logo">
-                    <img src="<%= logoUrl %>" alt="company Logo" id="company-logo-image">
+                    <img
+                        src="<%= logoUrl %>"
+                        alt="company Logo"
+                        id="company-logo-image"
+                    />
                 </div>
                 <div id="company-info">
                     <p id="company-name"><%= companyName %></p>
@@ -167,7 +173,7 @@
                 </div>
             </div>
             <div id="invoice-info" class="clearfix">
-                <div id="invoice-id">Invoice #<%= id %></div>
+                <div id="invoice-id">Bill #<%= id %></div>
                 <div id="invoice-date"><%= date %></div>
             </div>
             <div id="billing-info">
@@ -180,47 +186,38 @@
             <table id="invoice-details">
                 <thead>
                     <tr>
-                        <th>Details</th>
-                        <th>Rate</th>
+                        <th>Description</th>
+                        <th></th>
                         <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><%= description %></td>
-                        <td><%= rate %></td>
+                        <td></td>
                         <td><%= amount %></td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Tax:</td>
-                        <td>None</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Total Due:</td>
+                        <td>Total Amount:</td>
                         <td><%= amount %></td>
                     </tr>
-                    <tr id="balance-due">
+                    <!-- <tr id="balance-due">
                         <td></td>
                         <td>Balance Due:</td>
                         <td><%= amount %></td>
-                    </tr>
-                    <tr id="due-date">
+                    </tr> -->
+                    <!-- <tr id="due-date">
                         <td></td>
                         <td>Due Date:</td>
                         <td><%= dueDate %></td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
             <div id="footer">
-                <p id="confidential">
-                    This communication is for the exclusive use of the addressee and may contain proprietary,
-                    confidential or privileged information. If you are not the intended recipient any use, copying,
-                    disclosure, dissemination or distribution is strictly prohibited.
-                </p>
                 <p id="copyright">
-                    &copy; <%= currentYear %> <%= companyName %>. All rights reserved.
+                    &copy; <%= currentYear %> <%= companyName %>. All rights
+                    reserved.
                 </p>
             </div>
         </div>
