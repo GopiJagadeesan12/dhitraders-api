@@ -9,7 +9,10 @@ import { getPortalFromRequest } from "../portal/service";
 
 export default async (req, res) => {
     let { id } = req.query;
-
+    if (!id) {
+        id = req.params.id;
+    }
+    console.log("id --------->", id);
     const where = {};
     if (isInteger(id)) {
         where.id = id;

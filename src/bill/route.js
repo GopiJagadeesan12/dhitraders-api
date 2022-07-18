@@ -11,7 +11,7 @@ const billRoute = express.Router();
 
 billRoute.post("/", createRoute);
 billRoute.get("/search/", verifyToken, searchRoute);
-billRoute.get("/", verifyToken, getRoute);
+billRoute.get("/details/", verifyToken, getRoute);
 billRoute.get("/:id/render", verifyToken, renderInvoice);
 billRoute.get("/products/:id", verifyToken, getBillRelationDetails);
 
