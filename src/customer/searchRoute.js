@@ -76,6 +76,7 @@ export default async (req, res, next) => {
                 data.push({
                     id: customerData.id,
                     first_name: customerData.first_name,
+                    avatar: customerData.avatar,
                     phone_number: customerData.phone_number,
                     createdAt: defaultDateFormat(customerData.createdAt),
                     updatedAt: defaultDateFormat(customerData.updatedAt),

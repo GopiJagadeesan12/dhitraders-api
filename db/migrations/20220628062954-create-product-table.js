@@ -11,6 +11,10 @@ export function up(queryInterface, Sequelize) {
             type: Sequelize.STRING,
             allowNull: true,
         },
+        image: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
         product_sku: {
             type: Sequelize.STRING,
             allowNull: true,
