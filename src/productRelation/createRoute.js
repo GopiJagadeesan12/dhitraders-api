@@ -30,15 +30,12 @@ export default async (req, res, next) => {
         customer_id: data.customer_id,
         product_id: data.product_id,
     };
-
-    if (data.default_price === false || !data.default_price) {
+    if (data.price && !data.default_price == true) {
         createData.price = data.price;
-    }
-    if (data.default_price) {
+    } else {
         const defaultPrice = await getProductDetailById(data.product_id);
         createData.price = defaultPrice.price;
     }
-
 
     try {
         await productRelationService.create(createData);
