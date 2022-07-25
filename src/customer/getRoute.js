@@ -12,7 +12,6 @@ export default async (req, res) => {
     if (!id) {
         id = req.params.id;
     }
-    console.log("id --------->", id);
     const where = {};
     if (isInteger(id)) {
         where.id = id;

@@ -33,6 +33,7 @@ export default async (req, res) => {
             const {
                 id,
                 name,
+                image,
                 product_sku,
                 price,
                 createdAt,
@@ -42,6 +43,7 @@ export default async (req, res) => {
             const data = {
                 id,
                 name: name,
+                image,
                 product_sku: product_sku,
                 price,
                 avatar,

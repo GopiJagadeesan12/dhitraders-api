@@ -74,6 +74,7 @@ export default async (req, res, next) => {
                 data.push({
                     id: customerData.id,
                     name: customerData.name,
+                    image: customerData.image,
                     product_sku: customerData.product_sku,
                     price: customerData.price,
                     createdAt: defaultDateFormat(customerData.createdAt),

@@ -8,6 +8,7 @@ export default (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             name: DataTypes.STRING,
+            image: DataTypes.STRING,
             product_sku: DataTypes.STRING,
             price: DataTypes.STRING,
         },
