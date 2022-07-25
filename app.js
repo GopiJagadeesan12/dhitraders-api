@@ -33,13 +33,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(multiparty());
 
 // cors support
-const corsOptions ={
-   origin:'*', 
-   credentials:true,            //access-control-allow-credentials:true
-   optionSuccessStatus:200,
-}
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 // add compression
 app.use(compression());
